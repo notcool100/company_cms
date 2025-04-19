@@ -1,26 +1,60 @@
-import Link from "next/link"
-import Image from "next/image"
-import { ArrowRight, CheckCircle, Code, Database, Globe, Layers, Mail, MessageSquare, Phone } from "lucide-react"
-import { Button } from "../components/ui/button"
-import HeroSection from "@/components/hero-section"
-import WaterEffect from "../components/water-effect"
-import ServiceCard from "../components/service-card"
-import PortfolioItem from "../components/portfolio-item"
-import ContactForm from "../components/contact-form"
-import ParticleBackground from "../components/particle-background"
-import AnimatedText from "../components/animated-text"
-import ScrollReveal from "../components/scroll-reveal"
-import CursorEffect from "../components/cursor-effect"
-import FloatingNavigation from "../components/floating-navigation"
-import TestimonialCarousel from "../components/testimonial-carousel"
-import StatsSection from "../components/stats-section"
-import Timeline from "../components/timeline"
-import TeamMemberCard from "../components/team-member-card"
-import ParallaxSection from "../components/parallax-section"
-import BlogCard from "../components/blog-card"
-import Floating3DObjects from "../components/floating-3d-objects"
+import React from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRight, CheckCircle, Code, Database, Globe, Layers, Mail, MessageSquare, Phone } from "lucide-react";
+import { Button } from "../components/ui/button";
+import HeroSection from "../components/hero-section";
+import WaterEffect from "../components/water-effect";
+import ServiceCard from "../components/service-card";
+import PortfolioItem from "../components/portfolio-item";
+import ContactForm from "../components/contact-form";
+import ParticleBackground from "../components/particle-background";
+import AnimatedText from "../components/animated-text";
+import ScrollReveal from "../components/scroll-reveal";
+import CursorEffect from "../components/cursor-effect";
+import FloatingNavigation from "../components/floating-navigation";
+import TestimonialCarousel from "../components/testimonial-carousel";
+import StatsSection from "../components/stats-section";
+import Timeline from "../components/timeline";
+import TeamMemberCard from "../components/team-member-card";
+import ParallaxSection from "../components/parallax-section";
+import BlogCard from "../components/blog-card";
+import Floating3DObjects from "../components/floating-3d-objects";
 
-export default function Home() {
+async function fetchServices() {
+  const res = await fetch('http://localhost:3003/api/services', { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error('Failed to fetch services');
+  }
+  return res.json();
+}
+
+async function fetchTeamMembers() {
+  const res = await fetch('http://localhost:3003/api/team-members', { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error('Failed to fetch team members');
+  }
+  return res.json();
+}
+
+export interface Service {
+  id: string;
+  title: string;
+  description: string;
+}
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  bio: string;
+  imageUrl: string;
+}
+
+export default async function Home() {
+  const services: Service[] = await fetchServices();
+  const teamMembers: TeamMember[] = await fetchTeamMembers();
+
   return (
     <div className="min-h-screen flex flex-col">
       {/* Custom cursor effect */}
@@ -48,42 +82,15 @@ export default function Home() {
             </div>
           </ScrollReveal>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <ServiceCard
-              icon={<Code className="h-10 w-10" />}
-              title="Web Development"
-              description="Custom websites and web applications built with the latest technologies to deliver exceptional user experiences."
-              index={0}
-            />
-            <ServiceCard
-              icon={<Layers className="h-10 w-10" />}
-              title="UI/UX Design"
-              description="Intuitive and engaging user interfaces designed to enhance user experience and drive conversion."
-              index={1}
-            />
-            <ServiceCard
-              icon={<Database className="h-10 w-10" />}
-              title="Cloud Solutions"
-              description="Scalable and secure cloud infrastructure to optimize your business operations and reduce costs."
-              index={2}
-            />
-            <ServiceCard
-              icon={<Globe className="h-10 w-10" />}
-              title="Digital Marketing"
-              description="Strategic digital marketing campaigns to increase your online presence and drive business growth."
-              index={3}
-            />
-            <ServiceCard
-              icon={<MessageSquare className="h-10 w-10" />}
-              title="IT Consulting"
-              description="Expert advice and guidance to help you make informed decisions about your IT strategy."
-              index={4}
-            />
-            <ServiceCard
-              icon={<CheckCircle className="h-10 w-10" />}
-              title="Quality Assurance"
-              description="Comprehensive testing and quality assurance to ensure your software meets the highest standards."
-              index={5}
-            />
+            {services.map((service: Service, index: number) => (
+              <ServiceCard
+                key={service.id}
+                icon={<Code className="h-10 w-10" />}
+                title={service.title}
+                description={service.description}
+                index={index}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -247,54 +254,17 @@ export default function Home() {
           </ScrollReveal>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <TeamMemberCard
-              name="John Smith"
-              role="CEO & Founder"
-              bio="With over 15 years of experience in the tech industry, John leads our company with vision and expertise."
-              image="/placeholder.svg?height=400&width=400"
-              socialLinks={{
-                twitter: "#",
-                linkedin: "#",
-                github: "#",
-              }}
-              index={0}
-            />
-            <TeamMemberCard
-              name="Sarah Johnson"
-              role="CTO"
-              bio="Sarah oversees our technical strategy and ensures we stay at the cutting edge of technology."
-              image="/placeholder.svg?height=400&width=400"
-              socialLinks={{
-                twitter: "#",
-                linkedin: "#",
-                github: "#",
-              }}
-              index={1}
-            />
-            <TeamMemberCard
-              name="Michael Chen"
-              role="Lead Developer"
-              bio="Michael brings 10+ years of development experience and a passion for clean, efficient code."
-              image="/placeholder.svg?height=400&width=400"
-              socialLinks={{
-                twitter: "#",
-                linkedin: "#",
-                github: "#",
-              }}
-              index={2}
-            />
-            <TeamMemberCard
-              name="Emily Rodriguez"
-              role="UX/UI Designer"
-              bio="Emily creates beautiful, intuitive interfaces that delight users and drive engagement."
-              image="/placeholder.svg?height=400&width=400"
-              socialLinks={{
-                twitter: "#",
-                linkedin: "#",
-                github: "#",
-              }}
-              index={3}
-            />
+            {teamMembers.map((member: TeamMember, index: number) => (
+              <TeamMemberCard
+                key={member.id}
+                name={member.name}
+                role={member.role}
+                bio={member.bio}
+                image={member.imageUrl}
+                socialLinks={{}}
+                index={index}
+              />
+            ))}
           </div>
         </div>
       </section>

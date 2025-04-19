@@ -1,10 +1,10 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import { Button } from "../components/ui/button"
 import { ArrowRight } from "lucide-react"
-import { useSettings } from "@/lib/settings-provider"
-import AnimatedText from "@/components/animated-text"
-import ParticleBackground from "@/components/particle-background"
+import { useSettings } from "../lib/settings-provider"
+import AnimatedText from "../components/animated-text"
+import ParticleBackground from "../components/particle-background"
 import Image from "next/image"
 
 export default function HeroSection() {
