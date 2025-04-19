@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
@@ -38,9 +39,14 @@ async function main() {
   ]
 
   for (const service of services) {
-    await prisma.service.create({
-      data: service,
-    })
+    try {
+      const created = await prisma.service.create({
+        data: service,
+      })
+      console.log('Created service:', created)
+    } catch (error) {
+      console.error('Error creating service:', error)
+    }
   }
 
   // Seed Team Members
@@ -72,9 +78,35 @@ async function main() {
   ]
 
   for (const member of teamMembers) {
-    await prisma.teamMember.create({
-      data: member,
+    try {
+      const created = await prisma.teamMember.create({
+        data: member,
+      })
+      console.log('Created team member:', created)
+    } catch (error) {
+      console.error('Error creating team member:', error)
+    }
+  }
+
+  // Seed Admin User
+  const adminEmail = 'admin@example.com'
+  const adminPassword = 'admin123' // You may want to change this password
+
+  const hashedPassword = await bcrypt.hash(adminPassword, 10)
+
+  try {
+    const adminUser = await prisma.user.upsert({
+      where: { email: adminEmail },
+      update: {},
+      create: {
+        email: adminEmail,
+        password: hashedPassword,
+        role: 'ADMIN',
+      },
     })
+    console.log('Created admin user:', adminUser)
+  } catch (error) {
+    console.error('Error creating admin user:', error)
   }
 }
 
