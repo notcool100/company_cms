@@ -22,29 +22,32 @@ import BlogCard from "../components/blog-card";
 import Floating3DObjects from "../components/floating-3d-objects";
 
 async function fetchServices() {
-  const res = await fetch('http://localhost:3003/api/services', { cache: 'no-store' });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/services`, { cache: 'no-store' });
   if (!res.ok) {
     throw new Error('Failed to fetch services');
   }
-  return res.json();
+  const response = await res.json();
+  return response.success ? response.data : [];
 }
 
 async function fetchTeamMembers() {
-  const res = await fetch('http://localhost:3003/api/team-members', { cache: 'no-store' });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/team-members`, { cache: 'no-store' });
   if (!res.ok) {
     throw new Error('Failed to fetch team members');
   }
-  return res.json();
+  const response = await res.json();
+  return response.success ? response.data : [];
 }
 
 export interface Service {
-  id: string;
+  id: number;
   title: string;
   description: string;
+  icon: string;
 }
 
 export interface TeamMember {
-  id: string;
+  id: number;
   name: string;
   role: string;
   bio: string;
@@ -85,7 +88,7 @@ export default async function Home() {
             {services.map((service: Service, index: number) => (
               <ServiceCard
                 key={service.id}
-                icon={<Code className="h-10 w-10" />}
+                iconName={service.icon}
                 title={service.title}
                 description={service.description}
                 index={index}

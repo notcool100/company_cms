@@ -1,4 +1,4 @@
-import { PrismaClient, Status } from '@prisma/client';
+import { PrismaClient, Status, Page, Media, TeamMember, Service, User, Setting } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -17,7 +17,7 @@ export const db = {
       where: { slug },
     });
   },
-  createPage: async (page: Omit<any, 'id' | 'createdAt' | 'updatedAt'>) => {
+  createPage: async (page: Omit<Page, 'id' | 'createdAt' | 'updatedAt'>) => {
     return await prisma.page.create({
       data: {
         ...page,
@@ -25,7 +25,7 @@ export const db = {
       },
     });
   },
-  updatePage: async (id: number, data: Partial<any>) => {
+  updatePage: async (id: number, data: Partial<Page>) => {
     return await prisma.page.update({
       where: { id },
       data: {
@@ -49,7 +49,7 @@ export const db = {
       where: { id },
     });
   },
-  createMedia: async (item: Omit<any, 'id' | 'createdAt'>) => {
+  createMedia: async (item: Omit<Media, 'id' | 'createdAt'>) => {
     return await prisma.media.create({
       data: item,
     });
@@ -69,12 +69,12 @@ export const db = {
       where: { id },
     });
   },
-  createTeamMember: async (member: Omit<any, 'id'>) => {
+  createTeamMember: async (member: Omit<TeamMember, 'id'>) => {
     return await prisma.teamMember.create({
       data: member,
     });
   },
-  updateTeamMember: async (id: number, data: Partial<any>) => {
+  updateTeamMember: async (id: number, data: Partial<TeamMember>) => {
     return await prisma.teamMember.update({
       where: { id },
       data,
@@ -95,12 +95,12 @@ export const db = {
       where: { id },
     });
   },
-  createService: async (service: Omit<any, 'id'>) => {
+  createService: async (service: Omit<Service, 'id'>) => {
     return await prisma.service.create({
       data: service,
     });
   },
-  updateService: async (id: number, data: Partial<any>) => {
+  updateService: async (id: number, data: Partial<Service>) => {
     return await prisma.service.update({
       where: { id },
       data,
@@ -109,6 +109,45 @@ export const db = {
   deleteService: async (id: number) => {
     return await prisma.service.delete({
       where: { id },
+    });
+  },
+  
+  // Settings
+  getSettings: async () => {
+    return await prisma.setting.findMany();
+  },
+  getSettingsByCategory: async (category: string) => {
+    return await prisma.setting.findMany({
+      where: { category },
+    });
+  },
+  getSetting: async (key: string) => {
+    const setting = await prisma.setting.findUnique({
+      where: { key },
+    });
+    return setting;
+  },
+  createSetting: async (setting: Omit<Setting, 'id' | 'createdAt' | 'updatedAt'>) => {
+    return await prisma.setting.create({
+      data: setting,
+    });
+  },
+  updateSetting: async (key: string, value: string) => {
+    return await prisma.setting.update({
+      where: { key },
+      data: { value },
+    });
+  },
+  upsertSetting: async (key: string, value: string, category: string = 'general') => {
+    return await prisma.setting.upsert({
+      where: { key },
+      update: { value },
+      create: { key, value, category },
+    });
+  },
+  deleteSetting: async (key: string) => {
+    return await prisma.setting.delete({
+      where: { key },
     });
   },
 };
