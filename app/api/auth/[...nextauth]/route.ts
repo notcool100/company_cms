@@ -6,7 +6,10 @@ import bcrypt from "bcryptjs"
 import { db } from "@/lib/db"
 
 // Use a singleton pattern for Prisma to prevent too many connections
-const prisma = new PrismaClient()
+// Global variable to maintain prisma connection across hot reloads in development
+const globalForPrisma = global as unknown as { prisma: PrismaClient }
+const prisma = globalForPrisma.prisma || new PrismaClient()
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma
 
 export const authOptions: NextAuthOptions = {
   providers: [
