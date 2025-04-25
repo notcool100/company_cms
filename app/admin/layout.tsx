@@ -60,20 +60,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <LayoutDashboard className="mr-3 h-5 w-5 text-gray-500" />
             Dashboard
           </Link>
-          <Link
-            href="/admin/pages"
-            className="flex items-center rounded-md px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-          >
-            <FileText className="mr-3 h-5 w-5 text-gray-400" />
-            Pages
-          </Link>
-          <Link
-            href="/admin/media"
-            className="flex items-center rounded-md px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-          >
-            <ImageIcon className="mr-3 h-5 w-5 text-gray-400" />
-            Media
-          </Link>
+          
+          
           <Link
             href="/admin/team"
             className="flex items-center rounded-md px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
@@ -102,20 +90,20 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             <Layers className="mr-3 h-5 w-5 text-gray-400" />
             Services
           </Link>
-          <Link
+          {/* <Link
             href="/admin/analytics"
             className="flex items-center rounded-md px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
           >
             <BarChart3 className="mr-3 h-5 w-5 text-gray-400" />
             Analytics
-          </Link>
-          <Link
+          </Link> */}
+          {/* <Link
             href="/admin/settings"
             className="flex items-center rounded-md px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
           >
             <Settings className="mr-3 h-5 w-5 text-gray-400" />
             Settings
-          </Link>
+          </Link> */}
           <div className="pt-4">
             <div className="space-y-1">
               <Link
