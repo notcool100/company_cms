@@ -18,13 +18,20 @@ model Page {
 }
 
 model Media {
-  id         Int      @id @default(autoincrement())
-  name       String
-  type       String
-  url        String
-  size       String
-  dimensions String?
-  createdAt  DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  name        String
+  type        String
+  url         String
+  dimensions  String?
+  createdAt   DateTime @default(now())
+  alt         String?
+  description String?
+  mimeType    String
+  tags        String?
+  updatedAt   DateTime @updatedAt
+  uploadedBy  Int?
+  size        Int
+  user        User?    @relation(fields: [uploadedBy], references: [id])
 }
 
 model TeamMember {
@@ -47,9 +54,10 @@ model User {
   email     String   @unique
   password  String
   role      String
-  name      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  name      String?
+  media     Media[]
 }
 
 model Setting {
@@ -59,6 +67,30 @@ model Setting {
   category  String   @default("general")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model About {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  imageUrl    String
+  features    String[]
+  buttonText  String   @default("Learn More")
+  buttonUrl   String   @default("/about")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+}
+
+model Portfolio {
+  id          Int      @id @default(autoincrement())
+  title       String
+  category    String
+  description String
+  imageUrl    String
+  projectUrl  String?
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
 }
 
 enum Status {

@@ -255,12 +255,89 @@ More content will be added to this page before it is published.
       name: 'Regular User',
     },
   ]
+  
+  // Seed Media
+  const media = [
+    {
+      name: 'hero-image.jpg',
+      description: 'Main hero image for the homepage',
+      type: 'image',
+      mimeType: 'image/jpeg',
+      url: '/placeholder.svg?height=1920&width=1080',
+      size: 1258000,
+      dimensions: '1920x1080',
+      alt: 'Company team working together',
+      tags: 'hero,homepage,team',
+      uploadedBy: 1, // Admin user
+    },
+    {
+      name: 'team-photo.jpg',
+      description: 'Group photo of the team',
+      type: 'image',
+      mimeType: 'image/jpeg',
+      url: '/placeholder.svg?height=1200&width=800',
+      size: 856000,
+      dimensions: '1200x800',
+      alt: 'Team members at company retreat',
+      tags: 'team,people,company',
+      uploadedBy: 1, // Admin user
+    },
+    {
+      name: 'product-demo.mp4',
+      description: 'Product demonstration video',
+      type: 'video',
+      mimeType: 'video/mp4',
+      url: '/placeholder.svg?height=1920&width=1080',
+      size: 8500000,
+      dimensions: '1920x1080',
+      alt: null,
+      tags: 'product,demo,video',
+      uploadedBy: 2, // Editor user
+    },
+    {
+      name: 'company-logo.png',
+      description: 'Official company logo',
+      type: 'image',
+      mimeType: 'image/png',
+      url: '/placeholder.svg?height=512&width=512',
+      size: 325000,
+      dimensions: '512x512',
+      alt: 'Company logo',
+      tags: 'logo,brand,identity',
+      uploadedBy: 1, // Admin user
+    },
+    {
+      name: 'brochure.pdf',
+      description: 'Company services brochure',
+      type: 'document',
+      mimeType: 'application/pdf',
+      url: '/placeholder.svg?height=800&width=600',
+      size: 2150000,
+      dimensions: null,
+      alt: null,
+      tags: 'brochure,marketing,services',
+      uploadedBy: 2, // Editor user
+    },
+    {
+      name: 'service-icon.svg',
+      description: 'Icon for web development service',
+      type: 'image',
+      mimeType: 'image/svg+xml',
+      url: '/placeholder.svg?height=64&width=64',
+      size: 12500,
+      dimensions: '64x64',
+      alt: 'Web development icon',
+      tags: 'icon,service,web',
+      uploadedBy: 1, // Admin user
+    },
+  ]
 
   // Clear existing data
   console.log('Clearing existing data...')
   await prisma.page.deleteMany({})
   await prisma.service.deleteMany({})
   await prisma.teamMember.deleteMany({})
+  await prisma.media.deleteMany({})
   await prisma.user.deleteMany({})
 
   // Seed pages
@@ -289,21 +366,10 @@ More content will be added to this page before it is published.
     }
   }
 
-  // Seed team members
-  console.log('Seeding team members...')
-  for (const member of teamMembers) {
-    try {
-      const created = await prisma.teamMember.create({
-        data: member,
-      })
-      console.log(`Created team member: ${created.name}`)
-    } catch (error) {
-      console.error('Error creating team member:', error)
-    }
-  }
-
-  // Seed users
+  // Seed users first (needed for media foreign keys)
   console.log('Seeding users...')
+  const createdUsers: { [key: string]: number } = {}
+  
   for (const user of users) {
     try {
       const hashedPassword = await bcrypt.hash(user.password, 10)
@@ -316,8 +382,52 @@ More content will be added to this page before it is published.
         },
       })
       console.log(`Created user: ${created.email} (${created.role})`)
+      
+      // Store the user ID for later use
+      if (user.role === 'admin') {
+        createdUsers.admin = created.id
+      } else if (user.role === 'editor') {
+        createdUsers.editor = created.id
+      }
     } catch (error) {
       console.error(`Error creating user ${user.email}:`, error)
+    }
+  }
+
+  // Seed team members
+  console.log('Seeding team members...')
+  for (const member of teamMembers) {
+    try {
+      const created = await prisma.teamMember.create({
+        data: member,
+      })
+      console.log(`Created team member: ${created.name}`)
+    } catch (error) {
+      console.error('Error creating team member:', error)
+    }
+  }
+  
+  // Seed media with correct user IDs
+  console.log('Seeding media...')
+  for (const item of media) {
+    try {
+      // Map the uploadedBy value to the actual user ID
+      let uploadedById = null
+      if (item.uploadedBy === 1) {
+        uploadedById = createdUsers.admin
+      } else if (item.uploadedBy === 2) {
+        uploadedById = createdUsers.editor
+      }
+      
+      const created = await prisma.media.create({
+        data: {
+          ...item,
+          uploadedBy: uploadedById,
+        },
+      })
+      console.log(`Created media: ${created.name}`)
+    } catch (error) {
+      console.error(`Error creating media ${item.name}:`, error)
     }
   }
 

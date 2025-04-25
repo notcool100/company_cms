@@ -3,7 +3,10 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 @layer utilities {
@@ -15,72 +18,72 @@ body {
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --foreground: 222 47% 11%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
+    --popover-foreground: 222 47% 11%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11%;
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --chart-1: 12 76% 61%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 221 83% 53%;
+    --chart-1: 221 83% 53%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 210 40% 98%;
+    --sidebar-foreground: 215 25% 27%;
+    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary-foreground: 210 40% 98%;
+    --sidebar-accent: 210 40% 96.1%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 221 83% 53%;
   }
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 32% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 217 32% 17%;
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 32% 17%;
+    --input: 217 32% 17%;
+    --ring: 224 76% 48%;
+    --chart-1: 217 91% 60%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 217 32% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 32% 17%;
+    --sidebar-ring: 224 76% 48%;
   }
 }
 
@@ -90,6 +93,24 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+    font-size: 16px;
+    line-height: 1.5;
+    letter-spacing: -0.011em;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-medium tracking-tight text-foreground;
+    line-height: 1.2;
+  }
+  p {
+    @apply text-base leading-relaxed;
+  }
+  .text-muted-foreground {
+    @apply font-normal;
+  }
+  
+  /* Fix for heading text colors */
+  .text-3xl, .text-2xl, .text-4xl, .text-xl, .text-lg {
+    @apply text-foreground;
   }
 }
 
@@ -166,4 +187,173 @@ html {
   to {
     background-position-x: -200%;
   }
+}
+
+/* Fix for text colors */
+h1, h2, h3, h4, h5, h6 {
+  color: #1a202c !important; /* Dark gray, almost black */
+}
+
+p, span, div {
+  color: #4a5568 !important; /* Medium gray for body text */
+}
+
+a {
+  color: #3182ce !important; /* Blue for links */
+}
+
+.text-white {
+  color: white !important;
+}
+
+.text-black {
+  color: black !important;
+}
+
+.text-foreground {
+  color: #1a202c !important;
+}
+
+.text-muted-foreground {
+  color: #4a5568 !important;
+}
+
+.bg-white h1, .bg-white h2, .bg-white h3, .bg-white h4, .bg-white h5, .bg-white h6 {
+  color: #1a202c !important;
+}
+
+/* Override for specific text classes */
+.text-3xl, .text-2xl, .text-4xl, .text-xl, .text-lg {
+  color: #1a202c !important;
+}
+
+/* Exceptions for elements that should have different colors */
+.bg-primary *, .bg-secondary *, .bg-accent *, .bg-destructive *, 
+button, button *, [role="button"], [role="button"] *, .btn, .btn *, .button, .button *,
+nav a, .nav-link, header a, footer a, .sidebar a, .menu a, .dropdown a {
+  color: inherit !important;
+}
+
+/* Parallax section should have white text */
+.bg-gradient-to-b.from-gray-900.to-blue-950 h2,
+.bg-gradient-to-b.from-gray-900.to-blue-950 p,
+.parallax-title,
+.parallax-subtitle {
+  color: white !important;
+}
+
+.text-primary {
+  color: hsl(var(--primary)) !important;
+}
+
+.text-secondary {
+  color: hsl(var(--secondary)) !important;
+}
+
+.text-accent {
+  color: hsl(var(--accent)) !important;
+}
+
+.text-destructive {
+  color: hsl(var(--destructive)) !important;
+}
+
+/* Admin panel specific styles */
+.admin-layout {
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.admin-sidebar a {
+  font-weight: 500;
+  color: #4a5568 !important;
+}
+
+.admin-sidebar a:hover {
+  color: #1a202c !important;
+}
+
+/* Fix for admin sidebar links */
+.admin-sidebar a.text-gray-600,
+.admin-sidebar a.text-sm,
+.admin-sidebar a.font-medium,
+[class*="text-gray-"] {
+  color: #4a5568 !important;
+}
+
+[class*="text-gray-"]:hover {
+  color: #1a202c !important;
+}
+
+/* Fix for all text-gray classes */
+.text-gray-400 { color: #a0aec0 !important; }
+.text-gray-500 { color: #718096 !important; }
+.text-gray-600 { color: #4a5568 !important; }
+.text-gray-700 { color: #2d3748 !important; }
+.text-gray-800 { color: #1a202c !important; }
+.text-gray-900 { color: #171923 !important; }
+
+.admin-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.admin-card {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease-in-out;
+}
+
+.admin-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+/* Card specific styles */
+.card h1, .card h2, .card h3, .card h4, .card h5, .card h6,
+[class*="card"] h1, [class*="card"] h2, [class*="card"] h3, 
+[class*="card"] h4, [class*="card"] h5, [class*="card"] h6 {
+  color: #1a202c !important;
+}
+
+.card-title, [class*="cardTitle"], [class*="CardTitle"] {
+  color: #1a202c !important;
+}
+
+.card-description, [class*="cardDescription"], [class*="CardDescription"] {
+  color: #4a5568 !important;
+}
+
+/* Improved form styles */
+.form-label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  display: block;
+  color: #1a202c !important;
+}
+
+label {
+  color: #1a202c !important;
+}
+
+.form-input, 
+.form-textarea, 
+.form-select {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.375rem;
+  border: 1px solid hsl(var(--input));
+  background-color: transparent;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.form-input:focus, 
+.form-textarea:focus, 
+.form-select:focus {
+  outline: none;
+  border-color: hsl(var(--ring));
+  box-shadow: 0 0 0 2px hsla(var(--ring), 0.2);
 }

@@ -24,7 +24,8 @@ export type UploadResult = {
   file?: {
     name: string;
     type: string;
-    size: string;
+    mimeType: string;
+    size: number;
     url: string;
     dimensions?: string;
   };
@@ -75,13 +76,24 @@ export async function uploadFile(
       dimensions = 'unknown';
     }
 
+    // Determine file type category (image, video, document, etc.)
+    let fileCategory = 'document';
+    if (file.type.startsWith('image/')) {
+      fileCategory = 'image';
+    } else if (file.type.startsWith('video/')) {
+      fileCategory = 'video';
+    } else if (file.type.startsWith('audio/')) {
+      fileCategory = 'audio';
+    }
+
     // Return file information
     return {
       success: true,
       file: {
         name: file.name,
-        type: file.type,
-        size: formatFileSize(file.size),
+        type: fileCategory,
+        mimeType: file.type,
+        size: file.size,
         url: `/${directory}/${uniqueFilename}`,
         dimensions,
       },

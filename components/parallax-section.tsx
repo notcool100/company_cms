@@ -68,7 +68,8 @@ export default function ParallaxSection({ title, subtitle, buttonText, buttonLin
       {/* Content */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 z-10">
         <motion.h2
-          className="text-3xl md:text-5xl font-bold text-white mb-4"
+          className="text-3xl md:text-5xl font-bold text-white mb-4 parallax-title"
+          style={{ color: "white" }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -78,7 +79,8 @@ export default function ParallaxSection({ title, subtitle, buttonText, buttonLin
         </motion.h2>
 
         <motion.p
-          className="text-xl text-white/80 max-w-2xl mb-8"
+          className="text-xl text-white/80 max-w-2xl mb-8 parallax-subtitle"
+          style={{ color: "rgba(255, 255, 255, 0.8)" }}
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}

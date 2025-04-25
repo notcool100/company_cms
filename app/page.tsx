@@ -39,6 +39,24 @@ async function fetchTeamMembers() {
   return response.success ? response.data : [];
 }
 
+async function fetchAbout() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/about`, { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error('Failed to fetch about section');
+  }
+  const response = await res.json();
+  return response.success ? response.data : null;
+}
+
+async function fetchPortfolioItems() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/portfolio?featured=true&limit=3`, { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error('Failed to fetch portfolio items');
+  }
+  const response = await res.json();
+  return response.success ? response.data : [];
+}
+
 export interface Service {
   id: number;
   title: string;
@@ -54,9 +72,31 @@ export interface TeamMember {
   imageUrl: string;
 }
 
+export interface About {
+  id: number;
+  title: string;
+  description: string;
+  imageUrl: string;
+  features: string[];
+  buttonText: string;
+  buttonUrl: string;
+}
+
+export interface PortfolioItem {
+  id: number;
+  title: string;
+  category: string;
+  description: string;
+  imageUrl: string;
+  projectUrl?: string;
+  featured: boolean;
+}
+
 export default async function Home() {
   const services: Service[] = await fetchServices();
   const teamMembers: TeamMember[] = await fetchTeamMembers();
+  const about: About = await fetchAbout();
+  const portfolioItems: PortfolioItem[] = await fetchPortfolioItems();
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -78,7 +118,7 @@ export default async function Home() {
         <div className="container px-4 md:px-6">
           <ScrollReveal>
             <div className="flex flex-col items-center text-center space-y-4 mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Our Services</h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-foreground">Our Services</h2>
               <p className="text-muted-foreground max-w-[700px]">
                 We offer a comprehensive range of IT services to help your business thrive in the digital landscape
               </p>
@@ -103,7 +143,7 @@ export default async function Home() {
         <div className="container px-4 md:px-6">
           <ScrollReveal>
             <div className="flex flex-col items-center text-center space-y-4 mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Our Technology Stack</h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-foreground">Our Technology Stack</h2>
               <p className="text-muted-foreground max-w-[700px]">
                 We leverage cutting-edge technologies to build powerful, scalable, and future-proof solutions
               </p>
@@ -122,8 +162,8 @@ export default async function Home() {
               <div className="relative">
                 <div className="rounded-lg overflow-hidden">
                   <Image
-                    src="/placeholder.svg?height=600&width=600"
-                    alt="IT Team"
+                    src={about.imageUrl}
+                    alt={about.title}
                     width={600}
                     height={600}
                     className="w-full h-auto object-cover rounded-lg"
@@ -134,30 +174,21 @@ export default async function Home() {
             </ScrollReveal>
             <ScrollReveal direction="right">
               <div className="flex flex-col space-y-4">
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">About Our Company</h2>
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-foreground">{about.title}</h2>
                 <p className="text-muted-foreground">
-                  Founded in 2010, our IT company has been at the forefront of technological innovation, helping
-                  businesses of all sizes transform their digital presence and operations.
+                  {about.description}
                 </p>
                 <ul className="space-y-2">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-primary" />
-                    <span>Over 10 years of industry experience</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-primary" />
-                    <span>Team of 50+ skilled professionals</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-primary" />
-                    <span>Successfully delivered 200+ projects</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle className="h-5 w-5 text-primary" />
-                    <span>Partnerships with leading technology providers</span>
-                  </li>
+                  {about.features.map((feature, index) => (
+                    <li key={index} className="flex items-center gap-2">
+                      <CheckCircle className="h-5 w-5 text-primary" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
                 </ul>
-                <Button className="w-fit mt-4">Learn More About Us</Button>
+                <Button className="w-fit mt-4" asChild>
+                  <Link href={about.buttonUrl}>{about.buttonText}</Link>
+                </Button>
               </div>
             </ScrollReveal>
           </div>
@@ -169,7 +200,7 @@ export default async function Home() {
         <div className="container px-4 md:px-6">
           <ScrollReveal>
             <div className="flex flex-col items-center text-center space-y-4 mb-16">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Our Journey</h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-foreground">Our Journey</h2>
               <p className="text-muted-foreground max-w-[700px]">
                 From humble beginnings to industry leadership, explore the key milestones in our company's history
               </p>
@@ -193,37 +224,29 @@ export default async function Home() {
         <div className="container px-4 md:px-6">
           <ScrollReveal>
             <div className="flex flex-col items-center text-center space-y-4 mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Our Portfolio</h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-foreground">Our Portfolio</h2>
               <p className="text-muted-foreground max-w-[700px]">
                 Explore our recent projects and see how we've helped our clients achieve their goals
               </p>
             </div>
           </ScrollReveal>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <PortfolioItem
-              image="/placeholder.svg?height=400&width=600"
-              title="E-commerce Platform"
-              category="Web Development"
-              description="A fully responsive e-commerce platform with integrated payment gateway and inventory management."
-              index={0}
-            />
-            <PortfolioItem
-              image="/placeholder.svg?height=400&width=600"
-              title="Financial Dashboard"
-              category="UI/UX Design"
-              description="An intuitive financial dashboard for a leading fintech company, providing real-time data visualization."
-              index={1}
-            />
-            <PortfolioItem
-              image="/placeholder.svg?height=400&width=600"
-              title="Healthcare App"
-              category="Mobile Development"
-              description="A mobile application for a healthcare provider, enabling patients to book appointments and access medical records."
-              index={2}
-            />
+            {portfolioItems.map((item, index) => (
+              <PortfolioItem
+                key={item.id}
+                image={item.imageUrl}
+                title={item.title}
+                category={item.category}
+                description={item.description}
+                index={index}
+                url={item.projectUrl}
+              />
+            ))}
           </div>
           <div className="flex justify-center mt-10">
-            <Button variant="outline">View All Projects</Button>
+            <Button variant="outline" asChild>
+              <Link href="/portfolio">View All Projects</Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -233,7 +256,7 @@ export default async function Home() {
         <div className="container px-4 md:px-6">
           <ScrollReveal>
             <div className="flex flex-col items-center text-center space-y-4 mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">What Our Clients Say</h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-foreground">What Our Clients Say</h2>
               <p className="text-muted-foreground max-w-[700px]">
                 Don't just take our word for it - hear from some of our satisfied clients
               </p>
@@ -249,7 +272,7 @@ export default async function Home() {
         <div className="container px-4 md:px-6">
           <ScrollReveal>
             <div className="flex flex-col items-center text-center space-y-4 mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Meet Our Team</h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-foreground">Meet Our Team</h2>
               <p className="text-muted-foreground max-w-[700px]">
                 Our talented professionals are the heart of our company and the driving force behind our success
               </p>
@@ -277,7 +300,7 @@ export default async function Home() {
         <div className="container px-4 md:px-6">
           <ScrollReveal>
             <div className="flex flex-col items-center text-center space-y-4 mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Latest Insights</h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-foreground">Latest Insights</h2>
               <p className="text-muted-foreground max-w-[700px]">
                 Stay updated with our latest articles, news, and industry insights
               </p>
@@ -329,7 +352,7 @@ export default async function Home() {
           <div className="grid md:grid-cols-2 gap-10">
             <ScrollReveal direction="left">
               <div className="flex flex-col space-y-4">
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Get In Touch</h2>
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter text-foreground">Get In Touch</h2>
                 <p className="text-muted-foreground">
                   Have a project in mind or want to learn more about our services? Contact us today and let's discuss
                   how we can help you achieve your goals.

@@ -4,7 +4,19 @@ import { ReactNode, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { signOut, useSession } from "next-auth/react"
-import { BarChart3, FileText, Home, ImageIcon, LayoutDashboard, LogOut, Settings, Users } from "lucide-react"
+import { 
+  BarChart3, 
+  FileText, 
+  Home, 
+  ImageIcon, 
+  LayoutDashboard, 
+  LogOut, 
+  Settings, 
+  Users,
+  Info,
+  Briefcase,
+  Layers
+} from "lucide-react"
 
 interface AdminLayoutProps {
   children: ReactNode
@@ -31,9 +43,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   }
   
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100 admin-layout">
       {/* Desktop Sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-50 hidden w-64 flex-col border-r border-gray-200 bg-white shadow-sm md:flex">
+      <aside className="fixed inset-y-0 left-0 z-50 hidden w-64 flex-col border-r border-gray-200 bg-white shadow-sm md:flex admin-sidebar">
         <div className="flex h-14 items-center border-b border-gray-200 px-4">
           <Link href="/admin" className="flex items-center gap-2 font-bold text-gray-900">
             <span className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-600 text-white">CM</span>
@@ -68,6 +80,27 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           >
             <Users className="mr-3 h-5 w-5 text-gray-400" />
             Team
+          </Link>
+          <Link
+            href="/admin/about"
+            className="flex items-center rounded-md px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+          >
+            <Info className="mr-3 h-5 w-5 text-gray-400" />
+            About
+          </Link>
+          <Link
+            href="/admin/portfolio"
+            className="flex items-center rounded-md px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+          >
+            <Briefcase className="mr-3 h-5 w-5 text-gray-400" />
+            Portfolio
+          </Link>
+          <Link
+            href="/admin/services"
+            className="flex items-center rounded-md px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+          >
+            <Layers className="mr-3 h-5 w-5 text-gray-400" />
+            Services
           </Link>
           <Link
             href="/admin/analytics"
@@ -109,7 +142,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       {mobileMenuOpen && (
         <div className="fixed inset-0 z-50 md:hidden">
           <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={toggleMobileMenu}></div>
-          <div className="fixed inset-y-0 left-0 flex w-full max-w-xs flex-col bg-white">
+          <div className="fixed inset-y-0 left-0 flex w-full max-w-xs flex-col bg-white admin-sidebar">
             <div className="flex h-14 items-center border-b border-gray-200 px-4">
               <Link href="/admin" className="flex items-center gap-2 font-bold text-gray-900">
                 <span className="flex h-6 w-6 items-center justify-center rounded-md bg-blue-600 text-white">CM</span>
@@ -163,6 +196,30 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               >
                 <Users className="mr-3 h-5 w-5 text-gray-400" />
                 Team
+              </Link>
+              <Link
+                href="/admin/about"
+                className="flex items-center rounded-md px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                onClick={toggleMobileMenu}
+              >
+                <Info className="mr-3 h-5 w-5 text-gray-400" />
+                About
+              </Link>
+              <Link
+                href="/admin/portfolio"
+                className="flex items-center rounded-md px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                onClick={toggleMobileMenu}
+              >
+                <Briefcase className="mr-3 h-5 w-5 text-gray-400" />
+                Portfolio
+              </Link>
+              <Link
+                href="/admin/services"
+                className="flex items-center rounded-md px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                onClick={toggleMobileMenu}
+              >
+                <Layers className="mr-3 h-5 w-5 text-gray-400" />
+                Services
               </Link>
               <Link
                 href="/admin/analytics"
@@ -226,7 +283,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           </button>
           <div className="flex flex-1 items-center justify-between">
             <div>
-              <h1 className="text-lg font-medium text-gray-900">Admin Dashboard</h1>
+              <h1 className="text-xl font-semibold" style={{ color: "#1a202c" }}>Admin Dashboard</h1>
             </div>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
@@ -243,7 +300,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           </div>
         </header>
 
-        <main className="flex-1 p-6">{children}</main>
+        <main className="flex-1 p-6 admin-content">{children}</main>
       </div>
     </div>
   )
