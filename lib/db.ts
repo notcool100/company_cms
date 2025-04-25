@@ -255,7 +255,8 @@ export const db = {
             "Partnerships with leading technology providers"
           ],
           buttonText: "Learn More",
-          buttonUrl: "/about"
+          buttonUrl: "/about",
+          updatedAt: new Date() // Add the updatedAt field with the current date
         }
       });
     }
@@ -268,7 +269,10 @@ export const db = {
     if (about) {
       return await prisma.about.update({
         where: { id: about.id },
-        data
+        data: {
+          ...data,
+          updatedAt: new Date() // Always update the updatedAt field
+        }
       });
     } else {
       return await prisma.about.create({
@@ -278,7 +282,8 @@ export const db = {
           imageUrl: data.imageUrl || "/placeholder.svg?height=600&width=600",
           features: data.features || [],
           buttonText: data.buttonText || "Learn More",
-          buttonUrl: data.buttonUrl || "/about"
+          buttonUrl: data.buttonUrl || "/about",
+          updatedAt: new Date() // Add the updatedAt field with the current date
         }
       });
     }
@@ -307,13 +312,19 @@ export const db = {
   },
   createPortfolioItem: async (item: Omit<Portfolio, 'id' | 'createdAt' | 'updatedAt'>) => {
     return await prisma.portfolio.create({
-      data: item
+      data: {
+        ...item,
+        updatedAt: new Date() // Add the updatedAt field with the current date
+      }
     });
   },
   updatePortfolioItem: async (id: number, data: Partial<Omit<Portfolio, 'id' | 'createdAt' | 'updatedAt'>>) => {
     return await prisma.portfolio.update({
       where: { id },
-      data
+      data: {
+        ...data,
+        updatedAt: new Date() // Always update the updatedAt field
+      }
     });
   },
   deletePortfolioItem: async (id: number) => {
