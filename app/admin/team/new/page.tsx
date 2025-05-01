@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { ArrowLeft, Save, Upload } from "lucide-react"
+import { ArrowLeft, Save } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { 
@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/form"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/components/ui/use-toast"
+import MediaSelector from "@/components/media-selector"
 
 // Define form schema
 const teamMemberFormSchema = z.object({
@@ -163,37 +164,19 @@ export default function NewTeamMemberPage() {
                     name="imageUrl"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Image URL</FormLabel>
+                        <FormLabel>Team Member Image</FormLabel>
                         <FormControl>
-                          <Input 
-                            {...field} 
-                            placeholder="Enter image URL" 
-                            onChange={(e) => handleImageUrlChange(e.target.value)}
+                          <MediaSelector
+                            {...field}
+                            onChange={(url) => handleImageUrlChange(url)}
+                            placeholder="Select or upload team member image"
+                            description="Upload or select an image for this team member"
                           />
                         </FormControl>
-                        <FormDescription>
-                          URL to the team member's profile image
-                        </FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <div className="flex items-center gap-2">
-                    <Button 
-                      type="button" 
-                      variant="outline"
-                      onClick={() => {
-                        // In a real implementation, this would open a media library
-                        toast({
-                          title: "Media Library",
-                          description: "This would open your media library to select an image",
-                        })
-                      }}
-                    >
-                      <Upload className="mr-2 h-4 w-4" />
-                      Choose from Media Library
-                    </Button>
-                  </div>
                 </div>
                 <div className="flex flex-col items-center justify-center space-y-4">
                   <div className="relative aspect-square w-full max-w-[250px] overflow-hidden rounded-lg border bg-muted">

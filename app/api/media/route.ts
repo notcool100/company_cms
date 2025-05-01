@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { uploadFile } from '@/lib/upload';
 
 // Validation schema for updating media
 const updateMediaSchema = z.object({
@@ -128,32 +129,18 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // In a real application, you would upload the file to a storage service
-    // For this demo, we'll use placeholder URLs
+    // Upload the file using the upload utility
+    const uploadResult = await uploadFile(file);
     
-    // Get file details
-    const name = file.name;
-    const size = file.size;
-    const mimeType = file.type;
-    const type = file.type.split('/')[0]; // e.g., 'image' from 'image/jpeg'
-    
-    // Generate placeholder URL and dimensions
-    let url = '/placeholder.svg';
-    let dimensions = null;
-    
-    if (type === 'image') {
-      url = `/placeholder.svg?height=800&width=600`;
-      dimensions = '800x600';
-    } else if (type === 'video') {
-      url = `/placeholder.svg?height=1280&width=720`;
-      dimensions = '1280x720';
-    } else if (type === 'document') {
-      url = `/placeholder.svg?height=800&width=600&text=Document`;
-    } else if (type === 'audio') {
-      url = `/placeholder.svg?height=400&width=400&text=Audio`;
-    } else {
-      url = `/placeholder.svg?height=400&width=400&text=File`;
+    if (!uploadResult.success) {
+      return NextResponse.json(
+        { success: false, error: uploadResult.error },
+        { status: 400 }
+      );
     }
+    
+    // Get file details from the upload result
+    const { name, type, mimeType, size, url, dimensions } = uploadResult.file!;
     
     // Save media information to database
     const newMedia = await prisma.media.create({
@@ -164,7 +151,7 @@ export async function POST(request: NextRequest) {
         mimeType,
         url,
         size,
-        dimensions,
+        dimensions: dimensions || null,
         alt: alt || null,
         tags: tags || null,
         uploadedBy: parseInt(session.user.id),

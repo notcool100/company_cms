@@ -48,6 +48,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
+import MediaSelector from "@/components/media-selector"
 import AdminLayout from "@/components/admin-layout"
 import { AlertTriangle } from "lucide-react"
 import {
@@ -567,9 +568,13 @@ export default function PortfolioPage() {
                   name="imageUrl"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Image URL</FormLabel>
+                      <FormLabel>Project Image</FormLabel>
                       <FormControl>
-                        <Input placeholder="/images/portfolio/project1.jpg" {...field} />
+                        <MediaSelector
+                          {...field}
+                          placeholder="Select or upload project image"
+                          description="Upload or select an image for this project"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -699,9 +704,13 @@ export default function PortfolioPage() {
                   name="imageUrl"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Image URL</FormLabel>
+                      <FormLabel>Project Image</FormLabel>
                       <FormControl>
-                        <Input {...field} />
+                        <MediaSelector
+                          {...field}
+                          placeholder="Select or upload project image"
+                          description="Upload or select an image for this project"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

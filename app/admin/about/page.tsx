@@ -41,6 +41,7 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/components/ui/alert"
+import MediaSelector from "@/components/media-selector"
 
 // Define the about schema
 const aboutSchema = z.object({
@@ -304,13 +305,14 @@ export default function AboutPage() {
                       name="imageUrl"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Image URL</FormLabel>
+                          <FormLabel>About Section Image</FormLabel>
                           <FormControl>
-                            <Input placeholder="/images/about.jpg" {...field} />
+                            <MediaSelector
+                              {...field}
+                              placeholder="Select or upload about section image"
+                              description="Upload or select an image for the about section"
+                            />
                           </FormControl>
-                          <FormDescription>
-                            Enter the URL of the image to display in the about section
-                          </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
