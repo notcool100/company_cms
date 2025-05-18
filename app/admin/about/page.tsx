@@ -192,16 +192,16 @@ export default function AboutPage() {
   
   return (
     <AdminLayout>
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">About Section</h1>
-          <p className="text-muted-foreground">
+      <div className="space-y-8">
+        <div className="border-b border-gray-200 pb-5">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">About Section</h1>
+          <p className="mt-1 text-gray-500">
             Manage the about section displayed on your website
           </p>
         </div>
         
         {error && (
-          <Alert variant="destructive">
+          <Alert variant="destructive" className="animate-fade-in-up">
             <AlertTriangle className="h-4 w-4" />
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
@@ -209,66 +209,66 @@ export default function AboutPage() {
         )}
         
         {isLoading ? (
-          <div className="flex h-[200px] items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <div className="flex h-[300px] items-center justify-center">
+            <div className="loader"></div>
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-foreground">About Section Preview</CardTitle>
-                <CardDescription>
+          <div className="grid gap-8 md:grid-cols-2">
+            <Card className="overflow-hidden border-0 shadow-md bg-white">
+              <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 border-b">
+                <CardTitle className="text-gray-900">About Section Preview</CardTitle>
+                <CardDescription className="text-gray-600">
                   This is how the about section will appear on your website
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-6 p-6">
                 {about?.imageUrl ? (
-                  <div className="relative aspect-video overflow-hidden rounded-lg border">
+                  <div className="relative aspect-video overflow-hidden rounded-lg border shadow-sm">
                     <Image
                       src={about.imageUrl}
                       alt={about.title}
                       fill
-                      className="object-cover"
+                      className="object-cover transition-all duration-300 hover:scale-105"
                     />
                   </div>
                 ) : (
-                  <div className="flex aspect-video items-center justify-center rounded-lg border bg-muted">
-                    <ImageIcon className="h-10 w-10 text-muted-foreground" />
+                  <div className="flex aspect-video items-center justify-center rounded-lg border bg-gray-50">
+                    <ImageIcon className="h-12 w-12 text-gray-400" />
                   </div>
                 )}
                 
                 <div>
-                  <h3 className="text-xl font-bold text-foreground">{about?.title}</h3>
-                  <p className="mt-2 text-muted-foreground">{about?.description}</p>
+                  <h3 className="text-xl font-bold text-gray-900">{about?.title}</h3>
+                  <p className="mt-2 text-gray-600 leading-relaxed">{about?.description}</p>
                 </div>
                 
-                <div className="space-y-2">
-                  <h4 className="font-medium text-foreground">Features:</h4>
-                  <ul className="ml-6 list-disc space-y-1">
+                <div className="space-y-3">
+                  <h4 className="font-medium text-gray-900">Features:</h4>
+                  <ul className="ml-6 list-disc space-y-2">
                     {about?.features.map((feature, index) => (
-                      <li key={index}>{feature}</li>
+                      <li key={index} className="text-gray-700">{feature}</li>
                     ))}
                   </ul>
                 </div>
                 
                 <div>
-                  <Button size="sm" variant="outline">
+                  <Button size="sm" variant="outline" className="shadow-sm hover:shadow">
                     {about?.buttonText}
                   </Button>
                 </div>
               </CardContent>
             </Card>
             
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-foreground">Edit About Section</CardTitle>
-                <CardDescription>
+            <Card className="overflow-hidden border-0 shadow-md bg-white">
+              <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 border-b">
+                <CardTitle className="text-gray-900">Edit About Section</CardTitle>
+                <CardDescription className="text-gray-600">
                   Update the content of your about section
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-6">
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
                     <FormField
                       control={form.control}
                       name="title"
@@ -276,7 +276,7 @@ export default function AboutPage() {
                         <FormItem>
                           <FormLabel>Title</FormLabel>
                           <FormControl>
-                            <Input placeholder="About Our Company" {...field} />
+                            <Input placeholder="About Our Company" {...field} className="shadow-sm" />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -293,6 +293,7 @@ export default function AboutPage() {
                             <Textarea 
                               placeholder="Founded in 2010, our IT company has been at the forefront of technological innovation..." 
                               {...field} 
+                              className="shadow-sm min-h-[120px]"
                             />
                           </FormControl>
                           <FormMessage />
@@ -311,6 +312,7 @@ export default function AboutPage() {
                               {...field}
                               placeholder="Select or upload about section image"
                               description="Upload or select an image for the about section"
+                              className="shadow-sm"
                             />
                           </FormControl>
                           <FormMessage />
@@ -318,17 +320,18 @@ export default function AboutPage() {
                       )}
                     />
                     
-                    <div>
+                    <div className="pt-2">
                       <FormLabel>Features</FormLabel>
-                      <div className="mt-2 space-y-2">
+                      <div className="mt-3 space-y-3">
                         {features.map((feature, index) => (
-                          <div key={index} className="flex items-center gap-2">
-                            <Input value={feature} readOnly />
+                          <div key={index} className="flex items-center gap-2 group">
+                            <Input value={feature} readOnly className="shadow-sm group-hover:border-gray-400" />
                             <Button
                               type="button"
                               variant="ghost"
                               size="icon"
                               onClick={() => removeFeature(index)}
+                              className="hover:bg-red-50 hover:text-red-600 transition-colors"
                             >
                               <X className="h-4 w-4" />
                             </Button>
@@ -346,26 +349,28 @@ export default function AboutPage() {
                                 addFeature()
                               }
                             }}
+                            className="shadow-sm"
                           />
                           <Button
                             type="button"
                             variant="outline"
                             size="icon"
                             onClick={addFeature}
+                            className="hover:bg-blue-50 hover:text-blue-600 transition-colors shadow-sm"
                           >
                             <Plus className="h-4 w-4" />
                           </Button>
                         </div>
                         
                         {form.formState.errors.features && (
-                          <p className="text-sm font-medium text-destructive">
+                          <p className="text-sm font-medium text-red-500 mt-1.5">
                             {form.formState.errors.features.message}
                           </p>
                         )}
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-4 pt-2">
                       <FormField
                         control={form.control}
                         name="buttonText"
@@ -373,7 +378,7 @@ export default function AboutPage() {
                           <FormItem>
                             <FormLabel>Button Text</FormLabel>
                             <FormControl>
-                              <Input placeholder="Learn More" {...field} />
+                              <Input placeholder="Learn More" {...field} className="shadow-sm" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -387,7 +392,7 @@ export default function AboutPage() {
                           <FormItem>
                             <FormLabel>Button URL</FormLabel>
                             <FormControl>
-                              <Input placeholder="/about" {...field} />
+                              <Input placeholder="/about" {...field} className="shadow-sm" />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -397,13 +402,13 @@ export default function AboutPage() {
                     
                     <Button
                       type="submit"
-                      className="w-full"
+                      className="w-full mt-6"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Saving...
+                          Saving Changes...
                         </>
                       ) : (
                         <>

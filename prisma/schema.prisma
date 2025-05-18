@@ -93,6 +93,16 @@ model Portfolio {
   updatedAt   DateTime
 }
 
+model SectionVisibility {
+  id          Int      @id @default(autoincrement())
+  sectionId   String   @unique
+  isVisible   Boolean  @default(true)
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
 enum Status {
   Published
   Draft

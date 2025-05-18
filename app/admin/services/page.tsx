@@ -262,22 +262,22 @@ export default function ServicesPage() {
   
   return (
     <AdminLayout>
-      <div className="space-y-6">
-        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+      <div className="space-y-8">
+        <div className="flex flex-col justify-between gap-4 border-b border-gray-200 pb-5 md:flex-row md:items-center">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">Services</h1>
-            <p className="text-muted-foreground">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-900">Services</h1>
+            <p className="mt-1 text-gray-500">
               Manage the services displayed on your website
             </p>
           </div>
-          <Button onClick={() => setShowCreateDialog(true)}>
+          <Button onClick={() => setShowCreateDialog(true)} className="shadow-sm">
             <Plus className="mr-2 h-4 w-4" />
             Add Service
           </Button>
         </div>
         
         {error && (
-          <Alert variant="destructive">
+          <Alert variant="destructive" className="animate-fade-in-up">
             <AlertTriangle className="h-4 w-4" />
             <AlertTitle>Error</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
@@ -285,19 +285,19 @@ export default function ServicesPage() {
         )}
         
         {isLoading ? (
-          <div className="flex h-[200px] items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          <div className="flex h-[300px] items-center justify-center">
+            <div className="loader"></div>
           </div>
         ) : services.length === 0 ? (
-          <div className="flex h-[200px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
-            <div className="rounded-full bg-muted p-3">
-              <AlertCircle className="h-6 w-6 text-muted-foreground" />
+          <div className="flex h-[300px] flex-col items-center justify-center rounded-lg border border-gray-200 p-8 text-center bg-white shadow-sm">
+            <div className="rounded-full bg-gray-100 p-4">
+              <AlertCircle className="h-6 w-6 text-gray-500" />
             </div>
-            <h3 className="mt-4 text-lg font-semibold">No services found</h3>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <h3 className="mt-4 text-lg font-semibold text-gray-900">No services found</h3>
+            <p className="mt-2 text-sm text-gray-500">
               You haven't created any services yet. Add one to get started.
             </p>
-            <Button onClick={() => setShowCreateDialog(true)} className="mt-6">
+            <Button onClick={() => setShowCreateDialog(true)} className="mt-6 shadow-sm">
               <Plus className="mr-2 h-4 w-4" />
               Add Service
             </Button>
@@ -305,28 +305,29 @@ export default function ServicesPage() {
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (
-              <Card key={service.id}>
-                <CardHeader>
+              <Card key={service.id} className="overflow-hidden border-0 shadow-md bg-white">
+                <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 border-b">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <div className="rounded-full bg-primary/10 p-2 text-primary">
+                    <div className="flex items-center space-x-3">
+                      <div className="rounded-full bg-blue-50 p-2.5 text-blue-600 shadow-sm">
                         {/* Render icon based on service.icon */}
                         <span className="text-xl">{service.icon}</span>
                       </div>
-                      <CardTitle>{service.title}</CardTitle>
+                      <CardTitle className="text-gray-900">{service.title}</CardTitle>
                     </div>
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-1">
                       <Button
                         variant="ghost"
                         size="icon"
                         onClick={() => handleEditClick(service)}
+                        className="hover:bg-blue-50 hover:text-blue-600 transition-colors"
                       >
                         <Pencil className="h-4 w-4" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="text-destructive"
+                        className="hover:bg-red-50 hover:text-red-600 transition-colors"
                         onClick={() => handleDeleteClick(service)}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -334,8 +335,8 @@ export default function ServicesPage() {
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{service.description}</p>
+                <CardContent className="p-5 bg-white">
+                  <p className="text-gray-600 leading-relaxed">{service.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -345,16 +346,16 @@ export default function ServicesPage() {
       
       {/* Create Service Dialog */}
       <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Add Service</DialogTitle>
-            <DialogDescription>
+        <DialogContent className="bg-white">
+          <DialogHeader className="border-b pb-4">
+            <DialogTitle className="text-gray-900">Add Service</DialogTitle>
+            <DialogDescription className="text-gray-600">
               Add a new service to display on your website.
             </DialogDescription>
           </DialogHeader>
           
           <Form {...createForm}>
-            <form onSubmit={createForm.handleSubmit(createService)} className="space-y-4">
+            <form onSubmit={createForm.handleSubmit(createService)} className="space-y-5 py-4">
               <FormField
                 control={createForm.control}
                 name="title"
@@ -362,7 +363,7 @@ export default function ServicesPage() {
                   <FormItem>
                     <FormLabel>Title</FormLabel>
                     <FormControl>
-                      <Input placeholder="Web Development" {...field} />
+                      <Input placeholder="Web Development" {...field} className="shadow-sm" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -379,6 +380,7 @@ export default function ServicesPage() {
                       <Textarea 
                         placeholder="We create responsive websites that help your business grow..." 
                         {...field} 
+                        className="shadow-sm min-h-[120px]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -393,7 +395,7 @@ export default function ServicesPage() {
                   <FormItem>
                     <FormLabel>Icon</FormLabel>
                     <FormControl>
-                      <Input placeholder="🌐" {...field} />
+                      <Input placeholder="🌐" {...field} className="shadow-sm" />
                     </FormControl>
                     <FormDescription>
                       Enter an emoji or icon code to represent this service.
@@ -403,7 +405,7 @@ export default function ServicesPage() {
                 )}
               />
               
-              <DialogFooter>
+              <DialogFooter className="pt-2">
                 <Button
                   type="button"
                   variant="outline"
@@ -411,10 +413,11 @@ export default function ServicesPage() {
                     setShowCreateDialog(false)
                     createForm.reset()
                   }}
+                  className="shadow-sm"
                 >
                   Cancel
                 </Button>
-                <Button type="submit" disabled={isSubmitting}>
+                <Button type="submit" disabled={isSubmitting} className="shadow-sm">
                   {isSubmitting ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />

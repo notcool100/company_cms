@@ -159,10 +159,13 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
-        <Button onClick={() => router.push('/admin/pages/new')}>
+    <div className="space-y-8">
+      <div className="flex items-center justify-between border-b border-gray-200 pb-5">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Dashboard</h1>
+          <p className="mt-1 text-gray-500">Welcome back! Here's an overview of your website.</p>
+        </div>
+        <Button onClick={() => router.push('/admin/pages/new')} className="shadow-sm">
           <Plus className="mr-2 h-4 w-4" />
           New Page
         </Button>
@@ -170,66 +173,66 @@ export default function AdminDashboard() {
 
       {/* Stats Cards */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="transition-all duration-200 hover:shadow-md">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Total Pages</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
+        <Card className="stat-card">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 bg-white border-0">
+            <CardTitle className="text-sm font-medium text-gray-900">Total Pages</CardTitle>
+            <FileText className="h-4 w-4 text-gray-500" />
           </CardHeader>
-          <CardContent>
+          <CardContent className="bg-white">
             {isLoading ? (
-              <div className="h-8 w-16 animate-pulse rounded bg-muted"></div>
+              <div className="h-8 w-16 animate-pulse rounded bg-gray-100"></div>
             ) : (
               <>
-                <div className="text-2xl font-bold">{stats.totalPages}</div>
-                <p className="text-xs text-muted-foreground">+2 from last month</p>
+                <div className="stat-value">{stats.totalPages}</div>
+                <p className="stat-label">+2 from last month</p>
               </>
             )}
           </CardContent>
         </Card>
-        <Card className="transition-all duration-200 hover:shadow-md">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Media Files</CardTitle>
-            <ImageIcon className="h-4 w-4 text-muted-foreground" />
+        <Card className="stat-card">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 bg-white border-0">
+            <CardTitle className="text-sm font-medium text-gray-900">Media Files</CardTitle>
+            <ImageIcon className="h-4 w-4 text-gray-500" />
           </CardHeader>
-          <CardContent>
+          <CardContent className="bg-white">
             {isLoading ? (
-              <div className="h-8 w-16 animate-pulse rounded bg-muted"></div>
+              <div className="h-8 w-16 animate-pulse rounded bg-gray-100"></div>
             ) : (
               <>
-                <div className="text-2xl font-bold">{stats.totalMedia}</div>
-                <p className="text-xs text-muted-foreground">+8 from last month</p>
+                <div className="stat-value">{stats.totalMedia}</div>
+                <p className="stat-label">+8 from last month</p>
               </>
             )}
           </CardContent>
         </Card>
-        <Card className="transition-all duration-200 hover:shadow-md">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Team Members</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+        <Card className="stat-card">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 bg-white border-0">
+            <CardTitle className="text-sm font-medium text-gray-900">Team Members</CardTitle>
+            <Users className="h-4 w-4 text-gray-500" />
           </CardHeader>
-          <CardContent>
+          <CardContent className="bg-white">
             {isLoading ? (
-              <div className="h-8 w-16 animate-pulse rounded bg-muted"></div>
+              <div className="h-8 w-16 animate-pulse rounded bg-gray-100"></div>
             ) : (
               <>
-                <div className="text-2xl font-bold">{stats.totalTeamMembers}</div>
-                <p className="text-xs text-muted-foreground">No change</p>
+                <div className="stat-value">{stats.totalTeamMembers}</div>
+                <p className="stat-label">No change</p>
               </>
             )}
           </CardContent>
         </Card>
-        <Card className="transition-all duration-200 hover:shadow-md">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Page Views</CardTitle>
-            <BarChart3 className="h-4 w-4 text-muted-foreground" />
+        <Card className="stat-card">
+          <CardHeader className="flex flex-row items-center justify-between pb-2 bg-white border-0">
+            <CardTitle className="text-sm font-medium text-gray-900">Page Views</CardTitle>
+            <BarChart3 className="h-4 w-4 text-gray-500" />
           </CardHeader>
-          <CardContent>
+          <CardContent className="bg-white">
             {isLoading ? (
-              <div className="h-8 w-16 animate-pulse rounded bg-muted"></div>
+              <div className="h-8 w-16 animate-pulse rounded bg-gray-100"></div>
             ) : (
               <>
-                <div className="text-2xl font-bold">{stats.pageViews.toLocaleString()}</div>
-                <p className="text-xs text-muted-foreground">+14% from last month</p>
+                <div className="stat-value">{stats.pageViews.toLocaleString()}</div>
+                <p className="stat-label">+14% from last month</p>
               </>
             )}
           </CardContent>
@@ -237,40 +240,40 @@ export default function AdminDashboard() {
       </div>
 
       {/* Recent Activity */}
-      <Card className="transition-all duration-200 hover:shadow-md">
-        <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
-          <CardDescription>Latest updates and changes</CardDescription>
+      <Card className="overflow-hidden border-0 shadow-md bg-white">
+        <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 border-b">
+          <CardTitle className="text-gray-900">Recent Activity</CardTitle>
+          <CardDescription className="text-gray-600">Latest updates and changes</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6 bg-white">
           {isLoading ? (
             <div className="space-y-4">
               {[1, 2, 3].map((i) => (
                 <div key={i} className="flex items-center gap-4">
-                  <div className="h-9 w-9 animate-pulse rounded-full bg-muted"></div>
+                  <div className="h-9 w-9 animate-pulse rounded-full bg-gray-100"></div>
                   <div className="flex-1 space-y-2">
-                    <div className="h-4 w-3/4 animate-pulse rounded bg-muted"></div>
-                    <div className="h-3 w-1/2 animate-pulse rounded bg-muted"></div>
+                    <div className="h-4 w-3/4 animate-pulse rounded bg-gray-100"></div>
+                    <div className="h-3 w-1/2 animate-pulse rounded bg-gray-100"></div>
                   </div>
-                  <div className="h-8 w-16 animate-pulse rounded bg-muted"></div>
+                  <div className="h-8 w-16 animate-pulse rounded bg-gray-100"></div>
                 </div>
               ))}
             </div>
           ) : (
             <div className="space-y-4">
               {activities.map((activity) => (
-                <div key={activity.id} className="flex items-center gap-4">
-                  <div className={`flex h-9 w-9 items-center justify-center rounded-full ${getActivityBgColor(activity.type)}`}>
+                <div key={activity.id} className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-full ${getActivityBgColor(activity.type)}`}>
                     {getActivityIcon(activity.type)}
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium">{activity.description}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-sm font-medium text-gray-900">{activity.description}</p>
+                    <p className="text-xs text-gray-500">
                       {formatRelativeTime(activity.timestamp)} by {activity.user}
                     </p>
                   </div>
                   {activity.link && (
-                    <Button variant="outline" size="sm" asChild>
+                    <Button variant="outline" size="sm" asChild className="shadow-sm hover:shadow">
                       <Link href={activity.link}>View</Link>
                     </Button>
                   )}
@@ -282,35 +285,35 @@ export default function AdminDashboard() {
       </Card>
 
       {/* Quick Actions */}
-      <Card className="transition-all duration-200 hover:shadow-md">
-        <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
-          <CardDescription>Common tasks and shortcuts</CardDescription>
+      <Card className="overflow-hidden border-0 shadow-md bg-white">
+        <CardHeader className="bg-gradient-to-r from-gray-50 to-gray-100 border-b">
+          <CardTitle className="text-gray-900">Quick Actions</CardTitle>
+          <CardDescription className="text-gray-600">Common tasks and shortcuts</CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6 bg-white">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Link href="/admin/pages/new" className="transition-transform duration-200 hover:scale-105">
-              <div className="flex h-24 flex-col items-center justify-center rounded-lg border border-dashed p-4 text-center hover:bg-muted">
-                <FileText className="mb-2 h-5 w-5 text-muted-foreground" />
-                <p className="text-sm font-medium">Create Page</p>
+              <div className="flex h-28 flex-col items-center justify-center rounded-lg border border-gray-200 p-4 text-center hover:bg-gray-50 hover:border-gray-300 shadow-sm hover:shadow transition-all">
+                <FileText className="mb-3 h-6 w-6 text-blue-500" />
+                <p className="text-sm font-medium text-gray-900">Create Page</p>
               </div>
             </Link>
             <Link href="/admin/media/upload" className="transition-transform duration-200 hover:scale-105">
-              <div className="flex h-24 flex-col items-center justify-center rounded-lg border border-dashed p-4 text-center hover:bg-muted">
-                <ImageIcon className="mb-2 h-5 w-5 text-muted-foreground" />
-                <p className="text-sm font-medium">Upload Media</p>
+              <div className="flex h-28 flex-col items-center justify-center rounded-lg border border-gray-200 p-4 text-center hover:bg-gray-50 hover:border-gray-300 shadow-sm hover:shadow transition-all">
+                <ImageIcon className="mb-3 h-6 w-6 text-purple-500" />
+                <p className="text-sm font-medium text-gray-900">Upload Media</p>
               </div>
             </Link>
             <Link href="/admin/team/new" className="transition-transform duration-200 hover:scale-105">
-              <div className="flex h-24 flex-col items-center justify-center rounded-lg border border-dashed p-4 text-center hover:bg-muted">
-                <UserPlus className="mb-2 h-5 w-5 text-muted-foreground" />
-                <p className="text-sm font-medium">Add Team Member</p>
+              <div className="flex h-28 flex-col items-center justify-center rounded-lg border border-gray-200 p-4 text-center hover:bg-gray-50 hover:border-gray-300 shadow-sm hover:shadow transition-all">
+                <UserPlus className="mb-3 h-6 w-6 text-green-500" />
+                <p className="text-sm font-medium text-gray-900">Add Team Member</p>
               </div>
             </Link>
             <Link href="/admin/settings" className="transition-transform duration-200 hover:scale-105">
-              <div className="flex h-24 flex-col items-center justify-center rounded-lg border border-dashed p-4 text-center hover:bg-muted">
-                <Settings className="mb-2 h-5 w-5 text-muted-foreground" />
-                <p className="text-sm font-medium">Site Settings</p>
+              <div className="flex h-28 flex-col items-center justify-center rounded-lg border border-gray-200 p-4 text-center hover:bg-gray-50 hover:border-gray-300 shadow-sm hover:shadow transition-all">
+                <Settings className="mb-3 h-6 w-6 text-amber-500" />
+                <p className="text-sm font-medium text-gray-900">Site Settings</p>
               </div>
             </Link>
           </div>
