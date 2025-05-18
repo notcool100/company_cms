@@ -89,11 +89,21 @@ const visibilitySettingsSchema = z.object({
 	show_cta_section: z.boolean().default(true),
 });
 
+const footerSettingsSchema = z.object({
+	footer_company_name: z.string().min(1, "Company name is required"),
+	footer_description: z.string().min(1, "Description is required"),
+	footer_services_links: z.string().min(1, "Services links are required"),
+	footer_company_links: z.string().min(1, "Company links are required"),
+	footer_social_links: z.string().min(1, "Social links are required"),
+	footer_copyright_text: z.string().min(1, "Copyright text is required"),
+});
+
 type GeneralSettingsValues = z.infer<typeof generalSettingsSchema>;
 type SeoSettingsValues = z.infer<typeof seoSettingsSchema>;
 type AppearanceSettingsValues = z.infer<typeof appearanceSettingsSchema>;
 type SocialSettingsValues = z.infer<typeof socialSettingsSchema>;
 type VisibilitySettingsValues = z.infer<typeof visibilitySettingsSchema>;
+type FooterSettingsValues = z.infer<typeof footerSettingsSchema>;
 
 export default function SettingsPage() {
 	const { toast } = useToast();
@@ -171,6 +181,47 @@ export default function SettingsPage() {
 			show_blog_section: true,
 			show_contact_section: true,
 			show_cta_section: true,
+		},
+	});
+
+	// Footer settings form
+	const footerForm = useForm<FooterSettingsValues>({
+		resolver: zodResolver(footerSettingsSchema),
+		defaultValues: {
+			footer_company_name: "Tech Company",
+			footer_description:
+				"Providing innovative IT solutions to businesses worldwide since 2010.",
+			footer_services_links: JSON.stringify(
+				[
+					{ label: "Web Development", url: "#" },
+					{ label: "UI/UX Design", url: "#" },
+					{ label: "Cloud Solutions", url: "#" },
+					{ label: "Digital Marketing", url: "#" },
+				],
+				null,
+				2,
+			),
+			footer_company_links: JSON.stringify(
+				[
+					{ label: "About Us", url: "#" },
+					{ label: "Our Team", url: "#" },
+					{ label: "Careers", url: "#" },
+					{ label: "Contact", url: "#" },
+				],
+				null,
+				2,
+			),
+			footer_social_links: JSON.stringify(
+				[
+					{ label: "LinkedIn", url: "#" },
+					{ label: "Twitter", url: "#" },
+					{ label: "GitHub", url: "#" },
+					{ label: "Instagram", url: "#" },
+				],
+				null,
+				2,
+			),
+			footer_copyright_text: "© 2024 Tech Company. All rights reserved.",
 		},
 	});
 
@@ -252,6 +303,53 @@ export default function SettingsPage() {
 						youtube_url:
 							settings.youtube_url || "https://youtube.com/c/itcompanycms",
 					});
+
+					// Update footer form
+					footerForm.reset({
+						footer_company_name: settings.footer_company_name || "Tech Company",
+						footer_description:
+							settings.footer_description ||
+							"Providing innovative IT solutions to businesses worldwide since 2010.",
+						footer_services_links:
+							settings.footer_services_links ||
+							JSON.stringify(
+								[
+									{ label: "Web Development", url: "#" },
+									{ label: "UI/UX Design", url: "#" },
+									{ label: "Cloud Solutions", url: "#" },
+									{ label: "Digital Marketing", url: "#" },
+								],
+								null,
+								2,
+							),
+						footer_company_links:
+							settings.footer_company_links ||
+							JSON.stringify(
+								[
+									{ label: "About Us", url: "#" },
+									{ label: "Our Team", url: "#" },
+									{ label: "Careers", url: "#" },
+									{ label: "Contact", url: "#" },
+								],
+								null,
+								2,
+							),
+						footer_social_links:
+							settings.footer_social_links ||
+							JSON.stringify(
+								[
+									{ label: "LinkedIn", url: "#" },
+									{ label: "Twitter", url: "#" },
+									{ label: "GitHub", url: "#" },
+									{ label: "Instagram", url: "#" },
+								],
+								null,
+								2,
+							),
+						footer_copyright_text:
+							settings.footer_copyright_text ||
+							"© 2024 Tech Company. All rights reserved.",
+					});
 				}
 
 				// Fetch section visibility settings
@@ -300,7 +398,15 @@ export default function SettingsPage() {
 		};
 
 		fetchSettings();
-	}, [generalForm, seoForm, appearanceForm, socialForm, visibilityForm, toast]);
+	}, [
+		generalForm,
+		seoForm,
+		appearanceForm,
+		socialForm,
+		visibilityForm,
+		footerForm,
+		toast,
+	]);
 
 	const saveSettings = async (
 		category: string,
@@ -425,6 +531,10 @@ export default function SettingsPage() {
 			});
 	};
 
+	const onFooterSubmit = (data: FooterSettingsValues) => {
+		saveSettings("footer", data);
+	};
+
 	// Helper function to get section descriptions
 	const getSectionDescription = (sectionId: string): string => {
 		const descriptions: Record<string, string> = {
@@ -451,12 +561,13 @@ export default function SettingsPage() {
 			</div>
 
 			<Tabs defaultValue="general" className="space-y-4">
-				<TabsList className="grid w-full grid-cols-5">
+				<TabsList className="grid w-full grid-cols-6">
 					<TabsTrigger value="general">General</TabsTrigger>
 					<TabsTrigger value="seo">SEO</TabsTrigger>
 					<TabsTrigger value="appearance">Appearance</TabsTrigger>
-					<TabsTrigger value="social">Social Media</TabsTrigger>
-					<TabsTrigger value="visibility">Section Visibility</TabsTrigger>
+					<TabsTrigger value="social">Social</TabsTrigger>
+					<TabsTrigger value="footer">Footer</TabsTrigger>
+					<TabsTrigger value="visibility">Visibility</TabsTrigger>
 				</TabsList>
 
 				{/* General Settings */}
@@ -571,7 +682,7 @@ export default function SettingsPage() {
 									<Button type="submit" disabled={isLoading}>
 										{isLoading ? (
 											<>
-												<span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent"></span>
+												<span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent" />
 												Saving...
 											</>
 										) : (
@@ -709,7 +820,7 @@ export default function SettingsPage() {
 									<Button type="submit" disabled={isLoading}>
 										{isLoading ? (
 											<>
-												<span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent"></span>
+												<span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent" />
 												Saving...
 											</>
 										) : (
@@ -901,7 +1012,7 @@ export default function SettingsPage() {
 									<Button type="submit" disabled={isLoading}>
 										{isLoading ? (
 											<>
-												<span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent"></span>
+												<span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent" />
 												Saving...
 											</>
 										) : (
@@ -1014,7 +1125,140 @@ export default function SettingsPage() {
 									<Button type="submit" disabled={isLoading}>
 										{isLoading ? (
 											<>
-												<span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent"></span>
+												<span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent" />
+												Saving...
+											</>
+										) : (
+											<>
+												<Save className="mr-2 h-4 w-4" />
+												Save Changes
+											</>
+										)}
+									</Button>
+								</CardFooter>
+							</form>
+						</Form>
+					</Card>
+				</TabsContent>
+
+				{/* Footer Settings */}
+				<TabsContent value="footer">
+					<Card>
+						<Form {...footerForm}>
+							<form onSubmit={footerForm.handleSubmit(onFooterSubmit)}>
+								<CardHeader>
+									<CardTitle>Footer Settings</CardTitle>
+									<CardDescription>
+										Customize your website's footer content and links.
+									</CardDescription>
+								</CardHeader>
+								<CardContent className="space-y-6">
+									<FormField
+										control={footerForm.control}
+										name="footer_company_name"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Company Name</FormLabel>
+												<FormControl>
+													<Input {...field} />
+												</FormControl>
+												<FormDescription>
+													The name that appears in the footer
+												</FormDescription>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={footerForm.control}
+										name="footer_description"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Company Description</FormLabel>
+												<FormControl>
+													<Textarea {...field} />
+												</FormControl>
+												<FormDescription>
+													A brief description of your company
+												</FormDescription>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={footerForm.control}
+										name="footer_services_links"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Services Links</FormLabel>
+												<FormControl>
+													<Textarea {...field} rows={8} />
+												</FormControl>
+												<FormDescription>
+													JSON array of service links. Format: [{"{"} "label":
+													"Service Name", "url": "/service-url" {"}"}]
+												</FormDescription>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={footerForm.control}
+										name="footer_company_links"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Company Links</FormLabel>
+												<FormControl>
+													<Textarea {...field} rows={8} />
+												</FormControl>
+												<FormDescription>
+													JSON array of company links. Format: [{"{"} "label":
+													"Link Name", "url": "/page-url" {"}"}]
+												</FormDescription>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={footerForm.control}
+										name="footer_social_links"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Social Links</FormLabel>
+												<FormControl>
+													<Textarea {...field} rows={8} />
+												</FormControl>
+												<FormDescription>
+													JSON array of social media links. Format: [{"{"}{" "}
+													"label": "Platform", "url": "https://..." {"}"}]
+												</FormDescription>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+									<FormField
+										control={footerForm.control}
+										name="footer_copyright_text"
+										render={({ field }) => (
+											<FormItem>
+												<FormLabel>Copyright Text</FormLabel>
+												<FormControl>
+													<Input {...field} />
+												</FormControl>
+												<FormDescription>
+													Copyright notice text that appears at the bottom of
+													the footer
+												</FormDescription>
+												<FormMessage />
+											</FormItem>
+										)}
+									/>
+								</CardContent>
+								<CardFooter>
+									<Button type="submit" disabled={isLoading}>
+										{isLoading ? (
+											<>
+												<span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent" />
 												Saving...
 											</>
 										) : (
@@ -1313,7 +1557,7 @@ export default function SettingsPage() {
 									<Button type="submit" disabled={isLoading}>
 										{isLoading ? (
 											<>
-												<span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent"></span>
+												<span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-b-transparent" />
 												Saving...
 											</>
 										) : (

@@ -24,14 +24,9 @@ export async function GET(request: NextRequest) {
 		const url = new URL(request.url);
 		const category = url.searchParams.get("category");
 
-		let settings: Setting[];
-		if (category) {
-			settings = await prisma.setting.findMany({
-				where: { category },
-			});
-		} else {
-			settings = await prisma.setting.findMany();
-		}
+		const settings = await prisma.setting.findMany({
+			where: category ? { category } : undefined,
+		});
 
 		return NextResponse.json({
 			success: true,
@@ -84,8 +79,15 @@ export async function POST(request: NextRequest) {
 		const updatedSettings = await prisma.$transaction(
 			result.data.settings.map((setting) =>
 				prisma.setting.upsert({
-					where: { key: setting.key },
-					update: { value: setting.value },
+					where: {
+						key_category: {
+							key: setting.key,
+							category: setting.category,
+						},
+					},
+					update: {
+						value: setting.value,
+					},
 					create: {
 						key: setting.key,
 						value: setting.value,
@@ -129,25 +131,24 @@ export async function DELETE(request: NextRequest) {
 
 		const url = new URL(request.url);
 		const key = url.searchParams.get("key");
+		const category = url.searchParams.get("category");
 
-		if (!key) {
+		if (!key || !category) {
 			return NextResponse.json(
-				{ success: false, error: "Key parameter is required" },
+				{ success: false, error: "Key and category parameters are required" },
 				{ status: 400 },
 			);
 		}
 
-		// Check if setting exists
-		const existingSetting = await db.getSetting(key);
-		if (!existingSetting) {
-			return NextResponse.json(
-				{ success: false, error: "Setting not found" },
-				{ status: 404 },
-			);
-		}
-
 		// Delete the setting
-		await db.deleteSetting(key);
+		await prisma.setting.delete({
+			where: {
+				key_category: {
+					key,
+					category,
+				},
+			},
+		});
 
 		return NextResponse.json({
 			success: true,

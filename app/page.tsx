@@ -31,6 +31,8 @@ import ParallaxSection from "../components/parallax-section";
 import BlogCard from "../components/blog-card";
 import Floating3DObjects from "../components/floating-3d-objects";
 import SectionVisibilityWrapper from "@/components/section-visibility-wrapper";
+import Footer from "@/components/Footer";
+import { unstable_noStore as noStore } from "next/cache";
 
 // Move interfaces before the fetch functions
 export interface Service {
@@ -117,6 +119,9 @@ async function fetchPortfolioItems() {
 }
 
 export default async function Home() {
+	// Disable caching for this page
+	noStore();
+
 	const services: Service[] = await fetchServices();
 	const teamMembers: TeamMember[] = await fetchTeamMembers();
 	const about: About = await fetchAbout();
@@ -458,97 +463,7 @@ export default async function Home() {
 			</SectionVisibilityWrapper>
 
 			{/* Footer */}
-			<footer className="bg-gray-900 text-white py-12">
-				<div className="container px-4 md:px-6">
-					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-						<div>
-							<h3 className="text-xl font-bold mb-4">Tech Company</h3>
-							<p className="text-gray-400">
-								Providing innovative IT solutions to businesses worldwide since
-								2010.
-							</p>
-						</div>
-						<div>
-							<h3 className="text-xl font-bold mb-4">Services</h3>
-							<ul className="space-y-2 text-gray-400">
-								<li>
-									<Link href="#" className="hover:text-white transition-colors">
-										Web Development
-									</Link>
-								</li>
-								<li>
-									<Link href="#" className="hover:text-white transition-colors">
-										UI/UX Design
-									</Link>
-								</li>
-								<li>
-									<Link href="#" className="hover:text-white transition-colors">
-										Cloud Solutions
-									</Link>
-								</li>
-								<li>
-									<Link href="#" className="hover:text-white transition-colors">
-										Digital Marketing
-									</Link>
-								</li>
-							</ul>
-						</div>
-						<div>
-							<h3 className="text-xl font-bold mb-4">Company</h3>
-							<ul className="space-y-2 text-gray-400">
-								<li>
-									<Link href="#" className="hover:text-white transition-colors">
-										About Us
-									</Link>
-								</li>
-								<li>
-									<Link href="#" className="hover:text-white transition-colors">
-										Our Team
-									</Link>
-								</li>
-								<li>
-									<Link href="#" className="hover:text-white transition-colors">
-										Careers
-									</Link>
-								</li>
-								<li>
-									<Link href="#" className="hover:text-white transition-colors">
-										Contact
-									</Link>
-								</li>
-							</ul>
-						</div>
-						<div>
-							<h3 className="text-xl font-bold mb-4">Connect</h3>
-							<ul className="space-y-2 text-gray-400">
-								<li>
-									<Link href="#" className="hover:text-white transition-colors">
-										LinkedIn
-									</Link>
-								</li>
-								<li>
-									<Link href="#" className="hover:text-white transition-colors">
-										Twitter
-									</Link>
-								</li>
-								<li>
-									<Link href="#" className="hover:text-white transition-colors">
-										GitHub
-									</Link>
-								</li>
-								<li>
-									<Link href="#" className="hover:text-white transition-colors">
-										Instagram
-									</Link>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-						<p>&copy; 2024 Tech Company. All rights reserved.</p>
-					</div>
-				</div>
-			</footer>
+			<Footer />
 		</div>
 	);
 }

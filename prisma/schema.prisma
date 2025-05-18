@@ -62,11 +62,13 @@ model User {
 
 model Setting {
   id        Int      @id @default(autoincrement())
-  key       String   @unique
-  value     String
-  category  String   @default("general")
+  key       String
+  value     String   @db.Text
+  category  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([key, category])
 }
 
 model About {
