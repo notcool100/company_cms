@@ -21,10 +21,8 @@ export default function FloatingNavigation() {
 
 	useEffect(() => {
 		const handleScroll = () => {
-			// Set scrolled state for styling
 			setIsScrolled(window.scrollY > 100);
 
-			// Determine active section based on scroll position
 			const sections = navItems.map((item) => {
 				const element = document.getElementById(item.id);
 				if (!element) return { id: item.id, position: 0 };
@@ -36,9 +34,8 @@ export default function FloatingNavigation() {
 				};
 			});
 
-			// Find the section closest to the top of the viewport
 			const closest = sections.reduce((prev, curr) =>
-				prev.position < curr.position ? prev : curr,
+				prev.position < curr.position ? prev : curr
 			);
 
 			setActiveSection(closest.id);
@@ -89,8 +86,8 @@ export default function FloatingNavigation() {
 										}`}
 										onClick={() => setIsOpen(false)}
 									>
-										<item.icon size={20} className="text-white !text-white" />
-										<span className="text-white !text-white">{item.label}</span>
+										<item.icon size={20} className="text-white" />
+										<span className="text-white font-medium">{item.label}</span>
 									</Link>
 								))}
 							</div>
@@ -101,12 +98,9 @@ export default function FloatingNavigation() {
 
 			{/* Desktop navigation */}
 			<motion.div
-				className="fixed left-0 right-0 z-50 hidden md:block"
+				className="fixed top-0 left-0 right-0 z-50 hidden md:block"
 				initial={{ y: -100, opacity: 0 }}
-				animate={{
-					y: isScrolled ? 20 : 40,
-					opacity: 1,
-				}}
+				animate={{ y: 0, opacity: 1 }}
 				transition={{ duration: 0.3 }}
 			>
 				<div
@@ -129,7 +123,7 @@ export default function FloatingNavigation() {
 								<Link
 									key={item.id}
 									href={`#${item.id}`}
-									className="relative px-4 py-2 rounded-full transition-colors"
+									className="relative px-4 py-2 rounded-full transition-colors text-white"
 								>
 									{activeSection === item.id && (
 										<motion.div
@@ -138,7 +132,7 @@ export default function FloatingNavigation() {
 											transition={{ type: "spring", duration: 0.6 }}
 										/>
 									)}
-									<span className="relative z-10 text-white !text-white font-semibold text-lg">
+									<span className="relative z-10 text-white font-semibold text-lg">
 										{item.label}
 									</span>
 								</Link>
