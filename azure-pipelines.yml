@@ -1,0 +1,117 @@
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - frontend/*
+
+pool:
+  name: 'Astro'
+
+variables:
+  nodeVersion: '24.x'
+
+stages:
+
+# ----------------------------------------
+# 1. BUILD FRONTEND
+# ----------------------------------------
+- stage: BuildFrontend 
+  displayName: 'Build Frontend'
+  jobs:
+  - job: BuildFrontendJob
+    displayName: 'Build SvelteKit App'
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '$(nodeVersion)'
+      displayName: 'Install Node.js'
+    
+    - script: |
+        cd frontend
+        corepack enable
+        pnpm install
+      displayName: 'Install Frontend Dependencies'
+    
+    - script: |
+        cd frontend
+        echo "Running SvelteKit check"
+        pnpm run check || true
+      displayName: 'Run SvelteKit Check (Non-blocking)'
+    
+    - script: |
+        cd frontend
+        echo "Building SvelteKit application"
+        NODE_OPTIONS=--max_old_space_size=4096 pnpm run build
+      displayName: 'Build SvelteKit Application'
+    
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: 'frontend'
+        includeRootFolder: false
+        archiveType: 'tar'
+        tarCompression: 'gz'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/ubuck_frontend.tar.gz'
+        replaceExistingArchive: true
+    
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/ubuck_frontend.tar.gz'
+        ArtifactName: 'ubuck_frontend'
+        publishLocation: 'Container'
+
+
+# ----------------------------------------
+# 2. DEPLOY TO DEV
+# ----------------------------------------
+- stage: DeployDev
+  displayName: 'Deploy to Development'
+  dependsOn: BuildFrontend
+  jobs:
+  - job: DeployFrontendDev
+    displayName: 'Deploy Frontend to Dev'
+    steps:
+
+    - task: DownloadBuildArtifacts@1
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'ubuck_frontend'
+        downloadPath: '$(System.ArtifactsDirectory)'
+
+    - script: |
+        echo "Listing downloaded files:"
+        ls -la $(System.ArtifactsDirectory)
+
+        # Create temp dir
+        TEMP_DIR=$(mktemp -d)
+        echo "Created temp dir: $TEMP_DIR"
+
+        # Extract file
+        tar -xzf $(System.ArtifactsDirectory)/ubuck_frontend/ubuck_frontend.tar.gz -C $TEMP_DIR
+
+        # Target deployment path
+        TARGET_DIR="/var/www/u-buck/frontend"
+
+        # Prepare final path
+        mkdir -p $TARGET_DIR
+
+        # Remove old build folder if exists
+        if [ -d "$TARGET_DIR/build" ]; then
+          rm -rf "$TARGET_DIR/build"
+        fi
+
+        # Copy frontend files
+        rsync -av $TEMP_DIR/ $TARGET_DIR/
+
+        # Cleanup
+        rm -rf $TEMP_DIR
+
+        echo "Frontend deployed to $TARGET_DIR"
+      displayName: 'Extract & Deploy Frontend Build'
+
+    - script: |
+        echo "Reloading Nginx"
+        sudo nginx -t && sudo systemctl reload nginx
+      displayName: 'Reload Nginx After Deployment'
